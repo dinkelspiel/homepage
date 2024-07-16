@@ -2,7 +2,6 @@
 import { readFile } from "fs/promises";
 import matter from "gray-matter";
 import React from "react";
-import Header from "~/components/header";
 import { loadPost } from "~/server/md/loadPost";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";

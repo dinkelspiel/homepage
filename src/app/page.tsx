@@ -13,7 +13,6 @@ import React from "react";
 import Tag from "~/components/tag";
 import { readdir } from "fs/promises";
 import { loadPost } from "~/server/md/loadPost";
-import Header from "~/components/header";
 
 const Home = async () => {
   const posts = (await readdir("src/posts")).map((post) => loadPost(post));
