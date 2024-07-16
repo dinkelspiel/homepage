@@ -18,7 +18,7 @@ const Home = async () => {
   const posts = (await readdir("src/posts")).map((post) => loadPost(post));
 
   return (
-    <div className="mx-auto flex flex-col items-center gap-8 px-6 sm:px-0">
+    <div className="mx-auto flex flex-col items-center gap-8 px-6 lg:px-0">
       <Link href="/" className="relative my-6 cursor-pointer text-center">
         <h1
           className={`${robotoCondensed.className} text-8xl font-black text-[#ee2c05] sm:text-9xl`}
