@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: { post: string } }) => {
           Dinkelspiel
         </div>
       </Link>
-      <div className="flex flex-col gap-8 leading-normal">
+      <div className="flex flex-col gap-8 px-6 leading-normal lg:px-0">
         <Markdown
           rehypePlugins={[rehypeRaw]}
           components={{
