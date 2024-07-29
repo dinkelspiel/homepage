@@ -121,6 +121,35 @@ const Home = async () => {
                     <Tag>Next.JS</Tag>
                     <Tag>Tailwind CSS</Tag>
                     <Tag>MariaDB</Tag>
+                    <Tag>Docker</Tag>
+                  </div>
+                </div>
+              </Link>
+              <Link
+                className="group flex cursor-pointer flex-col gap-4 lg:flex-row"
+                href={"https://kirakira.keii.dev"}
+              >
+                <Image
+                  width={160}
+                  height={230}
+                  alt="Kirakira"
+                  src="/kirakira.png"
+                  className="h-[80px] w-[130px] rounded-lg border border-neutral-200 shadow-sm"
+                />
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2 font-semibold">
+                    Kirakira{" "}
+                    <ArrowUpRight className="size-4 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </div>
+                  <div className="text-sm text-neutral-500">
+                    A forum made in Gleam for the Gleam community
+                  </div>
+                  <div className="flex flex-wrap gap-1">
+                    <Tag>Gleam</Tag>
+                    <Tag>Lustre</Tag>
+                    <Tag>Wisp</Tag>
+                    <Tag>Docker</Tag>
+                    <Tag>Mysql</Tag>
                   </div>
                 </div>
               </Link>
