@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Roboto_Condensed } from "next/font/google";
 import localFont from "next/font/local";
+import CodeBlock from "./_components/code";
 
 const robotoCondensed = Roboto_Condensed({ subsets: ["latin"] });
 const PlaywriteCU = localFont({ src: "../../../styles/PlaywriteCU.ttf" });
@@ -38,6 +39,18 @@ const Page = async ({ params }: { params: { post: string } }) => {
               const { node, ...rest } = props;
               return <h1 className="text-4xl font-semibold" {...rest} />;
             },
+            h2(props) {
+              const { node, ...rest } = props;
+              return <h2 className="text-3xl font-semibold" {...rest} />;
+            },
+            h3(props) {
+              const { node, ...rest } = props;
+              return <h3 className="text-2xl font-semibold" {...rest} />;
+            },
+            h4(props) {
+              const { node, ...rest } = props;
+              return <h4 className="text-xl font-semibold" {...rest} />;
+            },
             a(props) {
               const { node, ...rest } = props;
               return <a className="text-sky-600 hover:underline" {...rest} />;
@@ -45,6 +58,10 @@ const Page = async ({ params }: { params: { post: string } }) => {
             i(props) {
               const { node, ...rest } = props;
               return <i className="text-neutral-700" {...rest} />;
+            },
+            code(props) {
+              const { node, ...rest } = props;
+              return <CodeBlock rest={rest} />;
             },
             img(props) {
               const { node, src, ...rest } = props;

@@ -32,7 +32,7 @@ const Home = async () => {
         </div>
       </Link>
 
-      <div className="mx-auto flex max-w-[800px] flex-col items-center gap-8">
+      <div className="mx-auto flex max-w-[1000px] flex-col items-center gap-8">
         <p className="flex max-w-[60ch] flex-wrap items-center justify-center gap-2 text-center text-lg font-medium">
           Welcome to my little corner of the internet.{" "}
           <Heart className="rotate-12 rounded-lg fill-[#ee2c05] stroke-[#ee2c05]" />
@@ -59,7 +59,7 @@ const Home = async () => {
               </span>{" "}
               Posts
             </h2>
-            <ul className="flex w-full flex-col">
+            <ul className="flex w-full flex-col gap-3">
               {posts
                 .sort(
                   (a, b) =>
