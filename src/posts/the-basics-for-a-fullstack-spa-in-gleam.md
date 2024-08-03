@@ -1,6 +1,6 @@
 ---
 title: "The basics for a fullstack SPA in Gleam"
-published: 2024/7/31
+published: 2024/8/03
 ---
 
 # The basics for a fullstack SPA in Gleam
