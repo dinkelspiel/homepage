@@ -172,7 +172,7 @@ export function get_route() {
 }
 ```
 
-Throughout this article you can run the frontend by using the command below, and it should automatically reload the page when you update the code (remember to install inotifytools if you're in wsl or on Linux).
+Throughout this article you can run the frontend by using the command below, and it should automatically reload the page when you update the code (remember to install inotifytools if you're in wsl or on Linux). Run this command once to setup your application and to see that a frontend is running on http://localhost:1234.
 
 ```bash
 $ gleam run -m lustre/dev start
@@ -195,8 +195,8 @@ import gleam/uri.{type Uri}
 import lustre
 import lustre/effect.{type Effect}
 import lustre/element.{type Element}
-import lustre/element/html.{div, text, a, form, input, button}
-import lustre/attribute.{href, type_}
+import lustre/element/html.{div, text, a, form, input, button, ul, li, h1, br}
+import lustre/attribute.{href, type_, style, class}
 import modem
 
 // This is the entrypoint for our app and wont change much
@@ -401,19 +401,21 @@ fn get_route() -> Route {
 
 fn view(model: Model) -> Element(Msg) {
   case model.route {
-    Home -> div([], // If we are on the homepage
-      list.map(model.posts, fn(post) { // Loop over all posts in our model
-        a([href("/post/" <> int.to_string(post.id))], [ // Return a link to /post/(post_id)
-          text(post.title), // With the post title as the link value
-        ])
-      })
-    )
+    Home -> // If we are on the homepage
+      ul([],
+        list.map(model.posts, fn(post) { // Loop over all posts in our model
+          li([], [
+            a([href("/post/" <> int.to_string(post.id))], [ // Return a link to /post/(post_id)
+              text(post.title), // With the post title as the link value
+            ])
+          ])
+        })
+      )
     ShowPost(post_id) -> { // If we are on the post page with a valid post_id
       let assert Ok(post) = list.find(model.posts, fn(post) { post.id == post_id }) // We find the post matching our post_id. Same as the post_id parsing but we only care if the value is valid so we don't care about error handling.
 
       div([], [ // Show our target post
-        text(post.title),
-        text(": "),
+        h1([], [text(post.title)]),
         text(post.body)
       ])
     }
@@ -509,19 +511,50 @@ fn view(model: Model) -> Element(Msg) {
           input([event.on_input(TitleUpdated)]), // event.on_input sends the message TitleUpdated each time the user updates the input
           text("Body"),
           input([event.on_input(BodyUpdated)]), // Same here but for BodyUpdated
+          br([]),
           button([type_("submit")], [
             text("Create Post")
           ])
         ])
       ],
       list.map(model.posts, fn(post) { // Loop over all posts in our model
-        a([href("/post/" <> int.to_string(post.id))], [ // Return a link to /post/(post_id)
-          text(post.title), // With the post title as the link value
-        ])
+        ul([],
+          [
+            li([], [
+              a([href("/post/" <> int.to_string(post.id))], [ // Return a link to /post/(post_id)
+                text(post.title), // With the post title as the link value
+              ])
+            ])
+          ]
+        )
       })
     )
   }
 }
+```
+
+### Styling
+
+Now in the end if you want to do some styling on your own then you can either uncomment the
+
+```html
+<!-- <link rel="stylesheet" href="/priv/static/frontend.css"> -->
+```
+
+line in your `/frontend/index.html` and start writing css directly and then referncing your classes then using the `class` attribute in your lustre code like you would in regular css. Or you can run
+
+```bash
+$ gleam run -m lustre/dev add tailwind
+```
+
+_(You also have to uncomment the frontend.css for this to work in the index.html)_
+
+and start writing tailwind directly in your lustre code like so:
+
+```rs
+div([class("flex flex-col")], [
+
+])
 ```
 
 ## The Backend
