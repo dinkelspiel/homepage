@@ -9,7 +9,7 @@ published: 2024/8/03
 
 Gleam is a functional programming language that, contrary to many other popular functional languages, features a syntax which will feel familiar to those accustomed to C-style programming languges like C#, Javascript, and Rust. This however is where a lot of similarities end for those unfamiliar with functional programming as common constructs like `for` and `while` are missing and replaced with functional recursion while `if` and `switch` have been combined into a more powerful `case`. I won't go any more indepth on the syntax of Gleam in this article but if you're interested i'd recommend checking out the [language tour](https://tour.gleam.run/) for a good starting point.
 
-With that being said this article goes into the stack and libraries used to create a fully [functional fullstack application in Gleam](https://kirakira.keii.dev) however I will not go into any specific details on how the website was made as the code is [available on github](https://github.com/dinkelspiel/kirakira). I will instead explain the basics of routing, ajax requests (fetch), and effects. This article also assumes that you have gone through the tour and know the basics like creating a gleam project and installing libraries as I will not go in to that here.
+With that being said this article goes into the stack and libraries used to create a fully [functional fullstack application in Gleam](https://kirakira.keii.dev) however I will not go into any specific details on how the website was made as the code is [available on github](https://github.com/dinkelspiel/kirakira). I will instead explain the basics of routing, ajax requests (fetch), and effects by making a simple post creating website by the end that creates and reads post through an api on the frontend. This article also assumes that you have gone through the tour and know the basics like creating a gleam project and installing libraries as I will not go in to that here.
 
 Before we get into all the code, the entiry codebase for this blogpost is available [on github](https://github.com/dinkelspiel/basic-fullstack-gleam) if you prefer to just look at the code.
 
@@ -74,7 +74,7 @@ fn view(model: Model) -> Element(Msg) {
 }
 ```
 
-If we break this down then we first define the model or the "State" for our project. For the counter we only need an integer so we will alias the Model type to an Int but for any project bigger than this you'd want to define a Constructor with named variables like so
+If we break this down then we first define the model or the "State" for our project. For the counter we only need an integer so we will alias the Model type to an Int. For any project bigger than however you'd want to define a Constructor with named variables like so
 
 ```rs
 type Model {
@@ -82,13 +82,45 @@ type Model {
 }
 ```
 
-Then we initalize the state as 0 and define our messages and we only need two effects: Increment and Decrement. These will be what call our updates and is the way you define messages between the html and the update function which is just a simple `case` (similar to a `switch`) over the recieved message. Here we want to add 1 to our model if the `Increment` message is sent and remove 1 from our model if the `Decrement` message is sent.
+```rs
+fn init(initial_count: Int) -> Model {
+  0
+}
+
+pub opaque type Msg {
+  Increment
+  Decrement
+}
+
+fn update(model: Model, msg: Msg) -> Model {
+  case msg {
+    Increment -> model + 1
+    Decrement -> model - 1
+  }
+}
+```
+
+Then we initalize the state as `0` and define our messages and we only need two effects: Increment and Decrement. These will be what call our updates and is the way you define messages between the html and the update function which is just a simple `case` (similar to a `switch`) over the recieved message. Here we want to add 1 to our model if the `Increment` message is sent and remove 1 from our model if the `Decrement` message is sent.
+
+```rs
+fn view(model: Model) -> Element(Msg) {
+  let count = int.to_string(model)
+
+  div([], [
+    button([on_click(Increment)], [text("+")]),
+    p([], [
+      text(count),
+    ]),
+    button([on_click(Decrement)], [text("-")]),
+  ])
+}
+```
 
 Then we define our view which returns a Lustre element type which is a Gleam appropriated syntax meant to be similar to html. It should be completely understandeable to anyone atleast somewhat familiar to html. The standouts to what might be considered wierd are the `[]` after the `div`/`p`/`button`, the `text` function and the type in the `on_click`. We will go through them one by one.
 
-First the `[]` after our elements is where we put our attributes. The code I've written doesn't include styling so they look remarkeable empty but if we were to add some classes to our `div` then it might look something like this: `div([class("container")], [])`. Then in the middle we have the function `text` this is simply because Gleam needs explicit types and the `String` type does not convert to the lustre `Element`. Therefor lustre provides the function as a way to add text to the html. Lastly the `on_click` function takes in a `Constructor` of the `Msg` type and it is how lustre handles events. This code will send the `Increment` message to the `update` function when the + button is pressed as an example. This might seem primitive but can be quite powerful when combinding it with data in the constructors so you might send a `Increment(step: 2)` instead of just an `Increment`.
+First the `[]` after our elements is where we put our attributes. The code I've written doesn't include styling so they look remarkeable empty but if we were to add some classes to our `div` then it might look something like this: `div([class("container")], [])`. Then in the middle we have the function `text` this is simply because Gleam needs explicit types and the `String` type does not convert to the lustre `Element`. Therefor lustre provides the function `text(String)` as a way to add text to the html. Lastly the `on_click` function takes in a `Constructor` of the `Msg` type (our `Increment` and `Decrement` functions) and it is how lustre handles events. This code will send the `Increment` message to the `update` function when the + button is pressed as an example. This might seem primitive but can be quite powerful when combinding it with data in the constructors so you might send a `Increment(step: 2)` instead of just an `Increment`.
 
-For this small example it is obviosuly more verbose compared to the React example but where this model really starts to shine is when you want to start breaking out components for a larger project than just a counter. In React [prop drilling](https://www.freecodecamp.org/news/avoid-prop-drilling-in-react/) is a common bad practice in React codebases so much so that [entire libraries](https://github.com/pmndrs/zustand) have been made to avoid it. And if you look at some sample zustand code:
+For this small example it is obviosuly more verbose compared to the React example but where this model really starts to shine is when you want to start breaking out components for a larger project than just a counter. In React [prop drilling](https://www.freecodecamp.org/news/avoid-prop-drilling-in-react/) is a common bad practice so much so that [entire libraries](https://github.com/pmndrs/zustand) have been made to avoid it. And if you look at some samples of those libraries (here I used zustand):
 
 ```js
 const useStore = create((set) => ({
@@ -112,7 +144,7 @@ function Counter() {
 
 You might notice that it looks remarkeably like our Lustre example. Lustre promotes a similar state management strategy out of the box allowing [scalability](https://hackernoon.com/scalability-the-lost-level-of-react-state-management) from the start. Defining the messages and models in this way means that any function in our codebase can read from the `model` as long as it is provided in the function by the parent and each function can send out any messages to be handles by a central structure, the `update`.
 
-### Create our app
+### Let's create our app
 
 Now when we've got the state out of the way we want to create our app. Since we are going to have a backend and a frontend we want to create folder for our two projects and then init our two projects inside of there, but we'll start with the frontend.
 
@@ -140,7 +172,7 @@ export function get_route() {
 }
 ```
 
-Throughout this article you can run the frontend by using
+Throughout this article you can run the frontend by using the command below, and it should automatically reload the page when you update the code (remember to install inotifytools if you're in wsl or on Linux).
 
 ```bash
 $ gleam run -m lustre/dev start
@@ -148,7 +180,7 @@ $ gleam run -m lustre/dev start
 
 ### Routing
 
-Although state management can go a long way defining different pages is neccesary for a webapp and one thing missing from both Lustre and React is a provided routing strategy. In React this is often solved by using a framework like [Next.JS](https://nextjs.org/) or a routing specific library like [React Router](https://reactrouter.com/en/main). Lustre provides a library called [Modem](https://hexdocs.pm/modem/) which is a simple client-side routing library that provides a router and some wrappers around `window.history.pushState` to allow for routing through Lustres Messages.
+Although state management can go a long way defining different pages is neccesary for a webapp and one thing missing from both Lustre and React is a provided routing strategy. In React this is often solved by using a framework like [Next.JS](https://nextjs.org/) or a routing specific library like [React Router](https://reactrouter.com/en/main). Lustre provides a library called [Modem](https://hexdocs.pm/modem/) which is a simple client-side routing library that provides a router and some wrappers around the `window.history` api to allow for routing by using Lustres Messages.
 
 To add `modem` to our app we can run the following command in the frontend folder
 

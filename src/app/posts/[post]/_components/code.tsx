@@ -16,7 +16,7 @@ const InternalCodeBlock = ({ rest }: { rest: any }) =>
     <CodeBlock
       text={rest.children}
       language={
-        ({ rs: "rust" } as Record<string, string>)[
+        ({ rs: "rust", js: "jsx" } as Record<string, string>)[
           rest.className.split("-")[1]
         ] ?? undefined
       }

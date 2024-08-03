@@ -55,6 +55,15 @@ const Page = async ({ params }: { params: { post: string } }) => {
               const { node, ...rest } = props;
               return <a className="text-sky-600 hover:underline" {...rest} />;
             },
+            blockquote(props) {
+              const { node, ...rest } = props;
+              return (
+                <blockquote
+                  className="rounded-e-md border-s-2 border-s-neutral-300 bg-neutral-200/40 p-3"
+                  {...rest}
+                />
+              );
+            },
             i(props) {
               const { node, ...rest } = props;
               return <i className="text-neutral-700" {...rest} />;
