@@ -13,12 +13,13 @@ import React from "react";
 import Tag from "~/components/tag";
 import { readdir } from "fs/promises";
 import { loadPost } from "~/server/md/loadPost";
+import ImageWheel from "./_components/imageWheel";
 
 const Home = async () => {
   const posts = (await readdir("src/posts")).map((post) => loadPost(post));
 
   return (
-    <div className="mx-auto flex flex-col items-center gap-8 px-6 lg:px-0">
+    <div className="mx-auto flex flex-col items-center gap-8 px-6 pb-6 lg:px-0">
       <Link href="/" className="relative my-6 cursor-pointer text-center">
         <h1
           className={`${robotoCondensed.className} text-8xl font-black text-[#ee2c05] sm:text-9xl`}
@@ -153,6 +154,104 @@ const Home = async () => {
                   </div>
                 </div>
               </Link>
+              <ImageWheel
+                images={[
+                  {
+                    src: "/controlpanel1.png",
+                    alt: "Apps in an tenant",
+                  },
+                  {
+                    src: "/controlpanel2.png",
+                    alt: "Settings for an tenant including, name, url, and transferring all apps in an organisation to another tenant",
+                  },
+                  {
+                    src: "/controlpanel3.png",
+                    alt: "Permission groups in a tenant, used for assigning permission flags in apps",
+                  },
+                  {
+                    src: "/controlpanel4.png",
+                    alt: "Log page for the Killergame app",
+                  },
+                  {
+                    src: "/controlpanel5.png",
+                    alt: "Permissions page for app for assigning permission flags to groups or users",
+                  },
+                  {
+                    src: "/controlpanel6.png",
+                    alt: "Login page for app shown to new users",
+                  },
+                  {
+                    src: "/controlpanel7.png",
+                    alt: "Login page for app shown to returning users",
+                  },
+                ]}
+              >
+                <div className="group flex cursor-pointer flex-col gap-4 lg:flex-row">
+                  <Image
+                    width={160}
+                    height={230}
+                    alt="Controlpanel"
+                    src="/controlpanel1.png"
+                    className="h-[80px] w-[130px] rounded-lg border border-neutral-200 shadow-sm"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2 font-semibold">
+                      Controlpanel{" "}
+                    </div>
+                    <div className="text-left text-sm text-neutral-500">
+                      A service I developed in high school for managing
+                      authentication, authorization, and logging for various
+                      applications used by the school through an OAuth2 login
+                      system (like Google Login)
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      <Tag>Next.JS</Tag>
+                      <Tag>Tailwind CSS</Tag>
+                      <Tag>MariaDB</Tag>
+                      <Tag>Docker</Tag>
+                    </div>
+                  </div>
+                </div>
+              </ImageWheel>
+              <ImageWheel
+                images={[
+                  {
+                    src: "/killergame1.png",
+                    alt: "Killergame when waiting for the start",
+                  },
+                  {
+                    src: "/killergame2.png",
+                    alt: "Killergame during the game",
+                  },
+                ]}
+              >
+                <div className="group flex cursor-pointer flex-col gap-4 lg:flex-row">
+                  <Image
+                    width={160}
+                    height={230}
+                    alt="Killergame"
+                    src="/killergame1.png"
+                    className="h-[80px] w-[130px] rounded-lg border border-neutral-200 shadow-sm"
+                  />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2 font-semibold">
+                      Killergame{" "}
+                    </div>
+                    <div className="text-left text-sm text-neutral-500">
+                      A game popular with universities in the us where each
+                      participating student gets another student to tag. I made
+                      this for my high school and each term around 200 students
+                      participate
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      <Tag>Next.JS</Tag>
+                      <Tag>Tailwind CSS</Tag>
+                      <Tag>MariaDB</Tag>
+                      <Tag>Docker</Tag>
+                    </div>
+                  </div>
+                </div>
+              </ImageWheel>
             </div>
           </div>
         </div>
