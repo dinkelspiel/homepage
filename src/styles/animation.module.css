@@ -1,0 +1,37 @@
+.fadeDown {
+  animation: fade-down 1s both;
+}
+
+.fade {
+  animation: fade 1s both;
+}
+
+.delay200 {
+  animation-delay: 200ms;
+}
+
+.delay600 {
+  animation-delay: 600ms;
+}
+
+@keyframes fade-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

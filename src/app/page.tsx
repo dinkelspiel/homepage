@@ -15,12 +15,17 @@ import { readdir } from "fs/promises";
 import { loadPost } from "~/server/md/loadPost";
 import ImageWheel from "./_components/imageWheel";
 
+import animation from "~/styles/animation.module.css";
+
 const Home = async () => {
   const posts = (await readdir("src/posts")).map((post) => loadPost(post));
 
   return (
     <div className="mx-auto flex flex-col items-center gap-8 px-6 pb-6 lg:px-0">
-      <Link href="/" className="relative my-6 cursor-pointer text-center">
+      <Link
+        href="/"
+        className={`${animation.fadeDown} ${animation.delay200} relative my-6 cursor-pointer text-center`}
+      >
         <h1
           className={`${robotoCondensed.className} text-8xl font-black text-[#ee2c05] sm:text-9xl`}
         >
@@ -33,7 +38,9 @@ const Home = async () => {
         </div>
       </Link>
 
-      <div className="mx-auto flex max-w-[1000px] flex-col items-center gap-8">
+      <div
+        className={`${animation.fade} ${animation.delay600} mx-auto flex max-w-[1000px] flex-col items-center gap-8`}
+      >
         <p className="flex max-w-[60ch] flex-wrap items-center justify-center gap-2 text-center text-lg font-medium">
           Welcome to my little corner of the internet.{" "}
           <Heart className="rotate-12 rounded-lg fill-[#ee2c05] stroke-[#ee2c05]" />
